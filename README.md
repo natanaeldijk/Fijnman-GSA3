@@ -178,7 +178,9 @@ Outcome:
 
 &#x20; → STRICT / SAFE
 
-&#x20; → REFUSAL```
+&#x20; → REFUSAL
+
+```
 
 
 
@@ -224,11 +226,7 @@ Full formal specification:
 
 
 
-```
-
 \[paper/fijnman\_gsa3\_v5.1.1.pdf](paper/fijnman\_gsa3\_v5.1.1.pdf)
-
-```
 
 
 
