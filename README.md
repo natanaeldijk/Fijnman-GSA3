@@ -164,9 +164,11 @@ Every output is \*\*structurally justified\*\*.
 
 \*\*Outcome:\*\*
 
-\- STRICT / SAFE  
+\- \*\*STRICT / SAFE\*\*  
 
-\- REFUSAL
+\- \*\*REFUSAL\*\*
+
+
 
 \---
 
