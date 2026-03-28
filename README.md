@@ -152,35 +152,33 @@ Every output is \*\*structurally justified\*\*.
 
 State space (Ψ)
 
-&#x20;       ↓
+&#x20;     ↓
 
 Apply constraints (Ξ)
 
-&#x20;       ↓
+&#x20;     ↓
 
 Substate S'
 
-&#x20;       ↓
+&#x20;     ↓
 
 Check Φᵢ-consistency
 
-&#x20;       ↓
+&#x20;     ↓
 
 Kernel K⁽ⁱ⁾(S')
 
-&#x20;       ↓
+&#x20;     ↓
 
 Select I\*
 
-&#x20;       ↓
+&#x20;     ↓
 
 Outcome:
 
 &#x20; → STRICT / SAFE
 
-&#x20; → or REFUSAL
-
-```
+&#x20; → REFUSAL```
 
 
 
