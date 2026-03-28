@@ -148,41 +148,25 @@ Every output is \*\*structurally justified\*\*.
 
 
 
-```text
+1\. \*\*State space (Ψ)\*\*  
 
-State space (Ψ)
+2\. \*\*Apply constraints (Ξ)\*\*  
 
-&#x20;     ↓
+3\. \*\*Substate S'\*\*  
 
-Apply constraints (Ξ)
+4\. \*\*Check Φᵢ-consistency\*\*  
 
-&#x20;     ↓
+5\. \*\*Compute kernel K⁽ⁱ⁾(S')\*\*  
 
-Substate S'
-
-&#x20;     ↓
-
-Check Φᵢ-consistency
-
-&#x20;     ↓
-
-Kernel K⁽ⁱ⁾(S')
-
-&#x20;     ↓
-
-Select I\*
-
-&#x20;     ↓
-
-Outcome:
-
-&#x20; → STRICT / SAFE
-
-&#x20; → REFUSAL
-
-```
+6\. \*\*Select I\*\*\*  
 
 
+
+\*\*Outcome:\*\*
+
+\- STRICT / SAFE  
+
+\- REFUSAL
 
 \---
 
