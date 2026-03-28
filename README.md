@@ -6,6 +6,10 @@
 
 
 
+> A formal, fail-closed alternative to truth-based reasoning systems.
+
+
+
 A layered symbolic framework for admissibility-based reasoning systems.
 
 GSA³ eliminates hallucinations by enforcing \*\*fail-closed semantics\*\*, replacing truth with \*\*structural invariance\*\* as the criterion for admissibility.
@@ -36,27 +40,177 @@ If not → \*\*REFUSAL\*\*
 
 
 
+\## 🧩 Intuition
+
+
+
+Traditional reasoning systems try to determine whether statements are \*\*true\*\*.
+
+
+
+GSA³ takes a different approach:
+
+
+
+> A state is not accepted because it is true,
+
+> but because it is \*\*structurally admissible\*\*.
+
+
+
+\---
+
+
+
+\### What goes wrong in standard systems?
+
+
+
+Most AI systems fail \*\*open\*\*:
+
+
+
+\* If information is missing → they guess
+
+\* If inconsistent → they still produce output
+
+\* If ambiguous → they hallucinate
+
+
+
+\---
+
+
+
+\### What GSA³ does instead
+
+
+
+GSA³ enforces a \*\*fail-closed pipeline\*\*:
+
+
+
+1\. Start with a symbolic state space
+
+2\. Apply constraints (Ξ) → obtain a substate
+
+3\. Check consistency relative to invariants (Φᵢ)
+
+4\. Compute the \*\*kernel\*\* (maximal consistent substate)
+
+5\. Select the highest admissible level (I\*)
+
+
+
+If no level is consistent → \*\*REFUSAL\*\*
+
+
+
+\---
+
+
+
+\### Why this matters
+
+
+
+\* No hallucinations
+
+\* No silent contradictions
+
+\* No unjustified conclusions
+
+
+
+Every output is \*\*structurally justified\*\*.
+
+
+
+\---
+
+
+
+\### One-line summary
+
+
+
+> GSA³ replaces truth with \*\*consistency under invariants\*\*,
+
+> and replaces guessing with \*\*refusal\*\*.
+
+
+
+\---
+
+
+
+\## 🔄 Pipeline Overview
+
+
+
+```text
+
+State space (Ψ)
+
+&#x20;       ↓
+
+Apply constraints (Ξ)
+
+&#x20;       ↓
+
+Substate S'
+
+&#x20;       ↓
+
+Check Φᵢ-consistency
+
+&#x20;       ↓
+
+Kernel K⁽ⁱ⁾(S')
+
+&#x20;       ↓
+
+Select I\*
+
+&#x20;       ↓
+
+Outcome:
+
+&#x20; → STRICT / SAFE
+
+&#x20; → or REFUSAL
+
+```
+
+
+
+\---
+
+
+
 \## 🧠 Key Concepts
 
 
 
 \* \*\*Fail-closed semantics\*\*: no guessing, no fallback heuristics
 
-\* \*\*Invariant hierarchy\*\*: ( \\Phi\_0 \\subseteq \\Phi\_1 \\subseteq \\dots \\subseteq \\Phi\_k )
+\* \*\*Invariant hierarchy\*\*: Φ₀ ⊆ Φ₁ ⊆ … ⊆ Φₖ
 
 \* \*\*Kernel-based admissibility\*\*: inconsistent substates collapse
 
 \* \*\*I\*\*\*: highest admissible level of knowledge
 
-\* \*\*Modes\*\*:
+
+
+\*\*Modes:\*\*
 
 
 
-&#x20; \* \*\*STRICT\*\* → unique model
+\* \*\*STRICT\*\* → unique model
 
-&#x20; \* \*\*SAFE\*\* → multiple consistent models
+\* \*\*SAFE\*\* → multiple consistent models
 
-&#x20; \* \*\*DEFEASIBLE\*\* → inconsistency → collapse
+\* \*\*DEFEASIBLE\*\* → inconsistency → collapse
 
 
 
@@ -74,7 +228,7 @@ Full formal specification:
 
 ```
 
-paper/fijnman\_gsa3\_v5.1.1.pdf
+\[paper/fijnman\_gsa3\_v5.1.1.pdf](paper/fijnman\_gsa3\_v5.1.1.pdf)
 
 ```
 
