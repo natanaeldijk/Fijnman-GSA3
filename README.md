@@ -422,61 +422,61 @@ Visual overview of the fail-closed reasoning pipeline:
 
 ```plaintext
 
-&#x20;       State Space (Ψ)
+State Space (Ψ)
 
-&#x20;               |
+&#x20;  |
 
-&#x20;               v
+&#x20;  v
 
-&#x20;     Apply Constraints (Ξ)
+Apply Constraints (Ξ)
 
-&#x20;               |
+&#x20;  |
 
-&#x20;               v
+&#x20;  v
 
-&#x20;          Substate S'
+Substate S'
 
-&#x20;               |
+&#x20;  |
 
-&#x20;               v
+&#x20;  v
 
-&#x20;     Check Φᵢ-Consistency
+Check Φᵢ-Consistency
 
-&#x20;               |
+&#x20;  |
 
-&#x20;       +-------+--------+
+&#x20;  +----------------------+
 
-&#x20;       |                |
+&#x20;  |                      |
 
-&#x20;       v                v
+&#x20;  v                      v
 
-&#x20;  Consistent      Inconsistent
+Consistent           Inconsistent
 
-&#x20;       |                |
+&#x20;  |                      |
 
-&#x20;       v                v
+&#x20;  v                      v
 
-&#x20;Kernel K^(i)(S')    Collapse
+Kernel K^(i)(S')     Collapse
 
-&#x20;       |                |
+&#x20;  |                      |
 
-&#x20;       v                v
+&#x20;  v                      v
 
-&#x20;  Select I\*          REFUSAL
+Select I\*             REFUSAL
 
-&#x20;       |
+&#x20;  |
 
-&#x20;       v
+&#x20;  v
 
-&#x20;    +-----+
++---------+
 
-&#x20;    |     |
+|         |
 
-&#x20;    v     v
+v         v
 
-&#x20; STRICT  SAFE
+STRICT   SAFE
 
-&#x20;(unique)(multiple)
+(unique) (multiple)
 
 ```
 
