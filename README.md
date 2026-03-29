@@ -40,6 +40,166 @@ If not → \*\*REFUSAL\*\*
 
 
 
+\## 📌 Executive Summary
+
+
+
+\*\*Fijnman-GSA³ v5.1.1\*\*  
+
+\*Architect: Natanaël van Dijk\*
+
+
+
+\### Core Thesis
+
+
+
+In safety-critical reasoning, admissibility must take precedence over truth.
+
+
+
+Systems should only produce outputs when structural consistency can be guaranteed.  
+
+Otherwise, they must refuse.
+
+
+
+\---
+
+
+
+\### 1. The Structural Problem
+
+
+
+Contemporary AI systems (including LLMs) operate in a fail-open manner.
+
+
+
+When faced with:
+
+\- incomplete information  
+
+\- conflicting constraints  
+
+
+
+they attempt probabilistic completion.
+
+
+
+This leads to:
+
+\- \*\*Hallucinations\*\* — implicit assumptions introduced without justification  
+
+\- \*\*Epistemic fragility\*\* — inconsistent outputs from identical inputs  
+
+
+
+\---
+
+
+
+\### 2. The GSA³ Approach: Fail-Closed Reasoning
+
+
+
+Fijnman-GSA³ introduces a layered symbolic framework for admissibility-based reasoning.
+
+
+
+\*\*Key components:\*\*
+
+
+
+\- \*\*Invariant hierarchy (Φᵢ)\*\*  
+
+&#x20; Φ₀ ⊆ Φ₁ ⊆ … ⊆ Φₖ  
+
+
+
+\- \*\*Level-relative admissibility (I\\\*)\*\*  
+
+&#x20; The system selects the highest level at which the state remains consistent  
+
+
+
+\- \*\*Kernel-based reasoning\*\*  
+
+&#x20; Inconsistent substates collapse; only admissible structure remains  
+
+
+
+If no admissible level exists → \*\*REFUSAL\*\*
+
+
+
+\---
+
+
+
+\### 3. Mechanized Verification
+
+
+
+GSA³ is executable and solver-backed.
+
+
+
+\- \*\*Symbolic state space\*\* — states are logical formulas (Ψ)  
+
+\- \*\*SMT-based validation\*\* — Z3 checks consistency and uniqueness  
+
+\- \*\*Deterministic execution\*\* — restricted to decidable fragments  
+
+
+
+\---
+
+
+
+\### 4. Strategic Implications
+
+
+
+\- \*\*Reliability by refusal\*\*  
+
+&#x20; No output without structural justification  
+
+
+
+\- \*\*Safety-first reasoning\*\*  
+
+&#x20; Designed for domains where wrong answers are unacceptable  
+
+
+
+\- \*\*Open and protected\*\*  
+
+&#x20; Released under AGPLv3 to prevent proprietary enclosure  
+
+
+
+\---
+
+
+
+\*\*GSA³ reframes reasoning:\*\*
+
+
+
+Not \*what is likely true\*  
+
+but  
+
+\*\*what is structurally admissible\*\*
+
+
+
+\---
+
+
+
 \## 🧩 Intuition
 
 
@@ -256,25 +416,69 @@ GSA³ would rather say “I don’t know” than give a wrong answer.
 
 
 
-1\. \*\*State space (Ψ)\*\*  
-
-2\. \*\*Apply constraints (Ξ)\*\*  
-
-3\. \*\*Substate S'\*\*  
-
-4\. \*\*Check Φᵢ-consistency\*\*  
-
-5\. \*\*Compute kernel K⁽ⁱ⁾(S')\*\*  
-
-6\. \*\*Select I\*\*\*  
+Visual overview of the fail-closed reasoning pipeline:
 
 
 
-\*\*Outcome:\*\*
+```plaintext
 
-\- \*\*STRICT / SAFE\*\*  
+&#x20;       State Space (Ψ)
 
-\- \*\*REFUSAL\*\*
+&#x20;               |
+
+&#x20;               v
+
+&#x20;     Apply Constraints (Ξ)
+
+&#x20;               |
+
+&#x20;               v
+
+&#x20;          Substate S'
+
+&#x20;               |
+
+&#x20;               v
+
+&#x20;     Check Φᵢ-Consistency
+
+&#x20;               |
+
+&#x20;       +-------+--------+
+
+&#x20;       |                |
+
+&#x20;       v                v
+
+&#x20;  Consistent      Inconsistent
+
+&#x20;       |                |
+
+&#x20;       v                v
+
+&#x20;Kernel K^(i)(S')    Collapse
+
+&#x20;       |                |
+
+&#x20;       v                v
+
+&#x20;  Select I\*          REFUSAL
+
+&#x20;       |
+
+&#x20;       v
+
+&#x20;    +-----+
+
+&#x20;    |     |
+
+&#x20;    v     v
+
+&#x20; STRICT  SAFE
+
+&#x20;(unique)(multiple)
+
+```
 
 
 
