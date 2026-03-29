@@ -384,21 +384,25 @@ Run from repository root:
 
 ```bash
 
-python tests/test\_muddy\_children.py
+python -m tests.test\_muddy\_children
 
-python tests/test\_inconsistency.py
+python -m tests.test\_inconsistency
 
-python tests/test\_unique\_model.py
+python -m tests.test\_unique\_model
 
-python tests/test\_strict.py
+python -m tests.test\_strict
 
-python tests/test\_mode\_profile.py
+python -m tests.test\_mode\_profile
+
+python -m tests.test\_defeasible
+
+python -m tests.test\_kernel\_monotonicity
 
 ```
 
 
 
-All tests are deterministic and demonstrate different admissibility modes (SAFE, STRICT, REFUSAL).
+All tests are deterministic and demonstrate the behavior of the fail-closed reasoning pipeline.
 
 
 
