@@ -412,12 +412,24 @@ GSA³ would rather say “I don’t know” than give a wrong answer.
 
 
 
-\## 🔄 Pipeline Overview
-
-
+## 🔄 Pipeline Overview
 
 Visual overview of the fail-closed reasoning pipeline:
 
+---
+
+## Legend
+
+- Ψ: Symbolic state space (logical formula)
+- Ξ: Additional constraints / restrictions
+- Φᵢ: Invariants at level i
+- ΔΦ: Change in the invariant system (0 = allowed, ≠0 = violation)
+- S': Derived substate after applying constraints
+- K⁽ⁱ⁾(S'): Kernel at level i (maximal consistent substate)
+- canon(σ): Canonical representation of a claim
+- I*: Highest admissible level
+
+---
 
 ```plaintext
 State Space (Ψ)
@@ -448,6 +460,70 @@ Select I*             REFUSAL
 v         v
 STRICT   SAFE
 (unique) (multiple)
+
+Ψ → Ξ → S' → Φ-check → K⁽ⁱ⁾(S') → canon(σ) → Output
+
+## Example
+
+1. State Space (Ψ):  
+   `x > 0 ∧ y = 2x`
+
+2. Apply Constraints (Ξ):  
+   `x = 2`  
+   → Substate S': `x = 2 ∧ y = 4`
+
+3. Check Φᵢ-Consistency:
+   - Level 0: Consistent (no invariants)
+   - Level 1: Consistent (`x ≥ 0`)
+
+4. Kernel K⁽ⁱ⁾(S'):  
+   `x = 2 ∧ y = 4`
+
+5. Canonicalization:
+   `canon(S') → σ̂`
+
+6. Result:
+   Unique model → **STRICT**
+
+## Modi
+
+- **STRICT**:
+  - |Models(S')| = 1
+  - ΔΦ = 0
+
+- **SAFE**:
+  - |Models(S')| > 1
+  - ∀ m: Φ(m) = 1
+
+- **DEFEASIBLE**:
+  - ∃ m: Φ(m) = 0  
+  → REFUSAL
+
+- **HALTED**:
+  - Complete_claim = false  
+  → HALT_SPEC_REQUIRED
+
+## Fail-Closed Behavior
+
+The system executes a transition only if:
+
+- Complete_claim(σ) = true  
+- canon(σ) exists  
+- ΔΦ = 0  
+
+Formally:
+
+A(q, S) is defined if and only if the above conditions hold.
+
+Otherwise:
+
+- Incomplete specification → HALT_SPEC_REQUIRED  
+- Inconsistency → REFUSAL  
+
+The system never guesses or interpolates.
+
+All semantics in this diagram are operational.
+If a step cannot be executed, the system halts.
 ```
 
 
