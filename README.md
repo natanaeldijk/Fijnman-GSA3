@@ -419,67 +419,36 @@ GSA³ would rather say “I don’t know” than give a wrong answer.
 Visual overview of the fail-closed reasoning pipeline:
 
 
-
 ```plaintext
-
 State Space (Ψ)
-
-&#x20;  |
-
-&#x20;  v
-
+   |
+   v
 Apply Constraints (Ξ)
-
-&#x20;  |
-
-&#x20;  v
-
+   |
+   v
 Substate S'
-
-&#x20;  |
-
-&#x20;  v
-
+   |
+   v
 Check Φᵢ-Consistency
-
-&#x20;  |
-
-&#x20;  +----------------------+
-
-&#x20;  |                      |
-
-&#x20;  v                      v
-
+   |
+   +----------------------+
+   |                      |
+   v                      v
 Consistent           Inconsistent
-
-&#x20;  |                      |
-
-&#x20;  v                      v
-
+   |                      |
+   v                      v
 Kernel K^(i)(S')     Collapse
-
-&#x20;  |                      |
-
-&#x20;  v                      v
-
-Select I\*             REFUSAL
-
-&#x20;  |
-
-&#x20;  v
-
+   |                      |
+   v                      v
+Select I*             REFUSAL
+   |
+   v
 +---------+
-
 |         |
-
 v         v
-
 STRICT   SAFE
-
 (unique) (multiple)
-
 ```
-
 
 
 \---
