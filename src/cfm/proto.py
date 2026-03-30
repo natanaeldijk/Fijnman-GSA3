@@ -1,5 +1,21 @@
+"""
+CFM (Counterfactual Monitor)
+
+This module observes the core system without modifying it.
+
+Responsibilities:
+- Detect rupture (constraint violations)
+- Analyze interference (how close to boundaries)
+- Update perspective (π)
+
+Design principle:
+CFM NEVER changes the core result.
+"""
+
+
 from __future__ import annotations
 
+from dataclasses import dataclass
 from gsa.core import GSA51Core
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional, Any
@@ -409,6 +425,25 @@ def main() -> None:
         print(f"Plot written to: {args.plot_out}")
 
 def is_rupture(core_output: str) -> bool:
+    """
+    Return True iff the core output indicates a rupture.
+
+    A rupture means that a proposed transition leaves the admissible region.
+
+    Rupture outputs:
+    - REJECT
+    - REFUSAL
+
+    Non-rupture outputs:
+    - ADMISSIBLE
+    - HALT_SPEC_REQUIRED
+
+    Notes
+    -----
+    HALT_SPEC_REQUIRED is not treated as rupture, because it indicates
+    missing specification rather than a failed transition from an
+    otherwise admissible region.
+    """
     return core_output in ["REJECT", "REFUSAL"]
 
 
@@ -452,5 +487,148 @@ def update_pi(pi: dict[str, float], x: float, core_output: str) -> dict[str, flo
 
     return {k: v / total for k, v in new_pi.items()}
 
+
+def interference(x: float, dx: float, lower: float, upper: float) -> dict[str, float]:
+    """
+    Measure which active boundary is most affected by a proposed step.
+
+    Parameters
+    ----------
+    x : float
+        Current state value.
+    dx : float
+        Proposed step.
+    lower : float
+        Lower admissible boundary.
+    upper : float
+        Upper admissible boundary.
+
+    Returns
+    -------
+    dict[str, float]
+        A simple boundary-sensitivity map.
+
+        Examples:
+        - {"upper": 2.0}
+        - {"lower": 1.5}
+        - {"none": 0.0}
+
+    Interpretation
+    --------------
+    - Larger values mean stronger interference with that boundary.
+    - Positive motion tests the upper boundary.
+    - Negative motion tests the lower boundary.
+    - Zero motion produces no interference.
+    """
+    result: dict[str, float] = {}
+
+    if dx > 0:
+        dist_upper = upper - x
+        result["upper"] = abs(dx / dist_upper) if dist_upper != 0 else float("inf")
+    elif dx < 0:
+        dist_lower = x - lower
+        result["lower"] = abs(dx / dist_lower) if dist_lower != 0 else float("inf")
+    else:
+        result["none"] = 0.0
+
+    return result
+
+
+def update_pi(pi: float, dx: float, accepted: bool) -> float:
+    """
+    Update the perspective parameter π based on the outcome of a proposed step.
+
+    Parameters
+    ----------
+    pi : float
+        Current perspective value.
+    dx : float
+        Proposed step.
+    accepted : bool
+        Whether the step was accepted by the core.
+
+    Returns
+    -------
+    float
+        Updated perspective.
+
+    Interpretation
+    --------------
+    - If the step is accepted, π shifts in the direction of dx.
+    - If the step is rejected, π remains unchanged.
+
+    Notes
+    -----
+    This function does NOT modify the core state.
+    It only tracks how perspective evolves relative to accepted motion.
+    """
+    if accepted:
+        return pi + dx
+    return pi
+
+
+def classify_interference(score: float) -> str:
+    """
+    Classify interference severity.
+
+    Parameters
+    ----------
+    score : float
+        Interference magnitude.
+
+    Returns
+    -------
+    str
+        One of:
+        - LOW
+        - MEDIUM
+        - HIGH
+    """
+    if score < 0.5:
+        return "LOW"
+    if score < 1.0:
+        return "MEDIUM"
+    return "HIGH"
+
+
+@dataclass
+class CFMResult:
+    result: str
+    x_new: float
+    rupture: bool
+    interference: dict
+    pi: float
+
+
+def cfm_step(core, x: float, dx: float, pi: float):
+    result, x_new = core.step(x, dx)
+    rupture = is_rupture(result)
+
+    inter = interference(x, dx, core.lower, core.upper)
+
+    if "upper" in inter:
+        severity = classify_interference(inter["upper"])
+    elif "lower" in inter:
+        severity = classify_interference(inter["lower"])
+    else:
+        severity = "LOW"
+
+    accepted = result == "ADMISSIBLE"
+    pi_new = update_pi(pi, dx, accepted)
+
+    return CFMResult(
+        result=result,
+        x_new=x_new,
+        rupture=rupture,
+        interference={
+            "values": inter,
+            "severity": severity,
+        },
+        pi=pi_new,
+    )
+
+
 if __name__ == "__main__":
     main()
+
+

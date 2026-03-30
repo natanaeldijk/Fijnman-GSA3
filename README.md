@@ -7,7 +7,7 @@
 ![Docs](https://img.shields.io/badge/docs-in%20progress-orange)
 ![License](https://img.shields.io/badge/license-AGPL--3.0-red)
 
-A formal constraint-based reasoning system combining a minimal core (GSA) with a diagnostic extension layer (CFM).
+A formal constraint-based reasoning system combining a minimal core (GSA) with a non-invasive diagnostic layer (CFM).
 
 ---
 
@@ -48,7 +48,7 @@ The core determines admissibility; the diagnostic layer explains outcomes.
 
 ---
 
-Repository Structure
+## Repository Structure
 
 ```text
 Fijnman-GSA3/
@@ -97,9 +97,15 @@ Responsible for:
 ## Testing
 
 Run all tests:
+```bash
 python -m pytest tests
 
+
+En:
+
+```md
 Run GSA-only tests:
+```bash
 python -m pytest tests/gsa
 
 ---
@@ -107,11 +113,11 @@ python -m pytest tests/gsa
 ## Documentation
 
 Located in:
-- docs/
-- core/ → minimal definitions
-- formal/ → theoretical framework
-- engine/ → system behavior
-- patch_notes/ → updates
+
+- `docs/core/` → minimal definitions  
+- `docs/formal/` → theoretical framework  
+- `docs/engine/` → system behavior  
+- `docs/patch_notes/` → updates  
 
 ---
 
@@ -125,10 +131,10 @@ Contains figures and captions for publication.
 
 ## Current Status
 
-Core: stable
-Tests: passing
-CFM: prototype
-Docs: in progress
+- Core: stable  
+- Tests: passing  
+- CFM: prototype  
+- Docs: in progress  
 
 ---
 
@@ -150,6 +156,65 @@ Docs: in progress
 
 ---
 
+## 🔄 Recent Changes
+
+### 🚀 CFM Flow Implementation
+
+### Added
+- Full CFM evaluation pipeline (`cfm_step`)
+- `CFMResult` dataclass for structured output
+- Interference severity classification (LOW / MEDIUM / HIGH)
+- Diagnostic composition:
+  - rupture detection
+  - interference analysis
+  - perspective update (π)
+
+### Updated
+- `cfm_step` now returns a structured object instead of dict
+- Interference output now includes:
+  - raw boundary values
+  - qualitative severity classification
+- Test suite updated to reflect dataclass-based interface
+
+### Fixed
+- Resolved mismatch between dict vs dataclass return type
+- Removed duplicate `cfm_step` definitions in tests
+- Fixed import issues (`PYTHONPATH=src`)
+- Fixed `update_pi` type inconsistency (dict → float bug)
+
+### Tests
+- Added tests for:
+  - CFM step structure
+  - Non-modification of core
+  - Interference severity classification
+- All tests passing:
+ - GSA tests ✅  
+ - CFM tests ✅  
+ - Integration tests ✅   
+
+### Documentation
+- Added formal specification:
+  - `docs/formal/cfm_flow.md`
+- Defined:
+  - pipeline structure
+  - output semantics
+  - invariants
+  - design principles
+
+### Design
+- Enforced strict separation:
+  - Core = existence (authoritative)
+  - CFM = interpretation (read-only)
+- Ensured compositional and testable architecture
+
+---
+
+## Conceptual Summary
+
+Core defines reality.  
+CFM explains it.
+
+---
 ## License
 
 ### This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
