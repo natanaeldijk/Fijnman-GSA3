@@ -1,6 +1,19 @@
 # Fijnman-GSA3
 
+![Status](https://img.shields.io/badge/status-research--prototype-blue)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Python](https://img.shields.io/badge/python-3.13-blue)
+![Architecture](https://img.shields.io/badge/architecture-GSA%20%2B%20CFM-purple)
+![Docs](https://img.shields.io/badge/docs-in%20progress-orange)
+![License](https://img.shields.io/badge/license-AGPL--3.0-red)
+
 A formal constraint-based reasoning system combining a minimal core (GSA) with a diagnostic extension layer (CFM).
+
+---
+
+## 👤 Author
+
+**Natanael van Dijk**
 
 ---
 
@@ -8,112 +21,36 @@ A formal constraint-based reasoning system combining a minimal core (GSA) with a
 
 Fijnman-GSA3 is a structured reasoning framework built around:
 
-* A **minimal admissibility core (GSA)**
-* A **mode-based evaluation system (SAFE / STRICT)**
-* A **constraint-flow diagnostic layer (CFM)**
+- a **minimal admissibility core (GSA)**
+- a **mode-based evaluation system**
+- a **constraint-flow diagnostic layer (CFM)**
 
-The system is designed to study:
-
-* consistency
-* defeasible reasoning
-* constraint interaction
-* model stability
+The project is aimed at reasoning under explicit constraints, with a strong focus on:
+- admissibility
+- consistency
+- defeasible reasoning
+- model stability
+- non-interfering diagnostics
 
 ---
 
 ## Architecture
 
-```
-gsa/      → formal core (GSA51Core)
-cfm/      → constraint-flow diagnostics (CFM prototype)
-tests/    → verification suite (pytest)
-docs/     → formal specifications and theory
+```text
+gsa/      → formal reasoning core
+cfm/      → diagnostic layer
+tests/    → verification suite
+docs/     → formal specifications
 paper/    → figures and publication material
 ```
 
----
-
-## Core Concepts
-
-### Constraint Admissibility
-
-Determines whether a step is valid within given bounds and constraints.
-
-### Mode Profiles
-
-Each evaluation produces a triple:
-
-```
-(SAFE | STRICT, STRICT, STRICT)
-```
-
-* **SAFE**: non-critical acceptance
-* **STRICT**: logically enforced constraint
+The core determines admissibility; the diagnostic layer explains outcomes.
 
 ---
 
-### Kernel Monotonicity
+Repository Structure
 
-Ensures that adding constraints does not introduce invalid previously valid states.
-
----
-
-### Defeasible Reasoning
-
-Supports reasoning under conflicting constraints while maintaining consistency.
-
----
-
-### Unique Model Convergence
-
-The system converges toward a stable admissible model under repeated updates.
-
----
-
-## Modules
-
-### GSA Core (`gsa/`)
-
-Implements the formal reasoning system:
-
-* admissibility checking
-* mode evaluation
-* constraint propagation
-
----
-
-### CFM Layer (`cfm/`)
-
-Provides diagnostics on top of the core:
-
-* rupture detection
-* constraint interference
-* update behavior tracking
-
----
-
-## Testing
-
-All functionality is verified using `pytest`.
-
-### Run all tests
-
-```bash
-python -m pytest tests
-```
-
-### Run only formal core tests
-
-```bash
-python -m pytest tests/gsa
-```
-
----
-
-## Project Structure
-
-```
-fijnman-gsa3/
+Fijnman-GSA3/
 │
 ├── gsa/
 ├── cfm/
@@ -129,70 +66,95 @@ fijnman-gsa3/
 ├── README.md
 ├── pytest.ini
 └── requirements.txt
-```
+
+---
+
+## Core Concepts
+
+
+### GSA Core
+
+Responsible for:
+- admissibility evaluation
+- constraint handling
+- mode profiling
+- kernel behavior
+- unique model checks
+
+
+### CFM Layer
+
+Responsible for:
+- rupture detection
+- interference analysis
+- perspective updates
+- explanation without modifying the core
+
+---
+
+## Testing
+
+Run all tests:
+python -m pytest tests
+
+Run GSA-only tests:
+python -m pytest tests/gsa
 
 ---
 
 ## Documentation
 
-Formal definitions and system design are located in:
-
-```
-docs/formal/
-```
-
-Key topics include:
-
-* admissibility operators
-* constraint systems (Φ)
-* equivalence and canonical forms
-* stability and knowledge dynamics
+Located in:
+- docs/
+- core/ → minimal definitions
+- formal/ → theoretical framework
+- engine/ → system behavior
+- patch_notes/ → updates
 
 ---
 
-## Figures
+## Paper Material
 
-All figures used for explanation and publication are stored in:
-
-```
+Located in:
 paper/figures/
-```
-
-Each figure should have:
-
-* a descriptive filename
-* a caption in `paper/figures/README.md`
+Contains figures and captions for publication.
 
 ---
 
-## Status
+## Current Status
 
-* Core implementation: **stable**
-* Test suite: **passing**
-* CFM layer: **prototype**
-* Documentation: **in progress**
-
----
-
-## Purpose
-
-This project explores a structured approach to reasoning systems where:
-
-* constraints define admissibility
-* modes define interpretation
-* diagnostics reveal structural behavior
+Core: stable
+Tests: passing
+CFM: prototype
+Docs: in progress
 
 ---
 
-## Future Work
+## Design Goals
 
-* Extend CFM diagnostics
-* Formalize event grammar
-* Expand model semantics
-* Prepare full publication
+- constraint-driven reasoning
+- explicit admissibility
+- non-invasive diagnostics
+- testable formal behavior
 
 ---
 
-## License
+## Roadmap
 
-To be defined.
+- extend CFM diagnostics
+- formalize event grammar
+- expand documentation
+- prepare publication
+
+---
+
+# License
+
+## This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+
+This means:
+- You can use, modify, and distribute the code
+- If you run it as a service, you must also share your modifications
+- The project remains fully open-source
+
+# See the LICENSE file for full details.
