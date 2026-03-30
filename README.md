@@ -50,6 +50,7 @@ The core determines admissibility; the diagnostic layer explains outcomes.
 
 Repository Structure
 
+```text
 Fijnman-GSA3/
 │
 ├── gsa/
@@ -66,6 +67,7 @@ Fijnman-GSA3/
 ├── README.md
 ├── pytest.ini
 └── requirements.txt
+```
 
 ---
 
@@ -148,13 +150,13 @@ Docs: in progress
 
 ---
 
-# License
+## License
 
-## This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+### This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
 
 This means:
 - You can use, modify, and distribute the code
 - If you run it as a service, you must also share your modifications
 - The project remains fully open-source
 
-# See the LICENSE file for full details.
+### See the LICENSE file for full details.
