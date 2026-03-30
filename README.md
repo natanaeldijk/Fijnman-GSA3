@@ -1,907 +1,219 @@
-\# Fijnman-GSA³ v5.1.1
+# Constraint-Flow Model (CFM) + GSA Core
 
-
-
-\*\*A Fail-Closed Framework for Structural Reasoning\*\*
-
-
-
-> A formal, fail-closed alternative to truth-based reasoning systems.
-
-
-
-A layered symbolic framework for admissibility-based reasoning systems.
-
-GSA³ eliminates hallucinations by enforcing \*\*fail-closed semantics\*\*, replacing truth with \*\*structural invariance\*\* as the criterion for admissibility.
-
-
-
-\---
-
-
-
-\## 🔑 Core Idea
-
-
-
-Instead of asking whether a statement is \*true\*, GSA³ asks:
-
-
-
-> \*\*Is this state structurally admissible under invariant constraints?\*\*
-
-
-
-If not → \*\*REFUSAL\*\*
-
-
-
-\---
-
-
-
-\## 📌 Executive Summary
-
-
-
-\*\*Fijnman-GSA³ v5.1.1\*\*  
-
-\*Architect: Natanaël van Dijk\*
-
-
-
-\### Core Thesis
-
-
-
-In safety-critical reasoning, admissibility must take precedence over truth.
-
-
-
-Systems should only produce outputs when structural consistency can be guaranteed.  
-
-Otherwise, they must refuse.
-
-
-
-\---
-
-
-
-\### 1. The Structural Problem
-
-
-
-Contemporary AI systems (including LLMs) operate in a fail-open manner.
-
-
-
-When faced with:
-
-\- incomplete information  
-
-\- conflicting constraints  
-
-
-
-they attempt probabilistic completion.
-
-
-
-This leads to:
-
-\- \*\*Hallucinations\*\* — implicit assumptions introduced without justification  
-
-\- \*\*Epistemic fragility\*\* — inconsistent outputs from identical inputs  
-
-
-
-\---
-
-
-
-\### 2. The GSA³ Approach: Fail-Closed Reasoning
-
-
-
-Fijnman-GSA³ introduces a layered symbolic framework for admissibility-based reasoning.
-
-
-
-\*\*Key components:\*\*
-
-
-
-\- \*\*Invariant hierarchy (Φᵢ)\*\*  
-
-&#x20; Φ₀ ⊆ Φ₁ ⊆ … ⊆ Φₖ  
-
-
-
-\- \*\*Level-relative admissibility (I\\\*)\*\*  
-
-&#x20; The system selects the highest level at which the state remains consistent  
-
-
-
-\- \*\*Kernel-based reasoning\*\*  
-
-&#x20; Inconsistent substates collapse; only admissible structure remains  
-
-
-
-If no admissible level exists → \*\*REFUSAL\*\*
-
-
-
-\---
-
-
-
-\### 3. Mechanized Verification
-
-
-
-GSA³ is executable and solver-backed.
-
-
-
-\- \*\*Symbolic state space\*\* — states are logical formulas (Ψ)  
-
-\- \*\*SMT-based validation\*\* — Z3 checks consistency and uniqueness  
-
-\- \*\*Deterministic execution\*\* — restricted to decidable fragments  
-
-
-
-\---
-
-
-
-\### 4. Strategic Implications
-
-
-
-\- \*\*Reliability by refusal\*\*  
-
-&#x20; No output without structural justification  
-
-
-
-\- \*\*Safety-first reasoning\*\*  
-
-&#x20; Designed for domains where wrong answers are unacceptable  
-
-
-
-\- \*\*Open and protected\*\*  
-
-&#x20; Released under AGPLv3 to prevent proprietary enclosure  
-
-
-
-\---
-
-
-
-\*\*GSA³ reframes reasoning:\*\*
-
-
-
-Not \*what is likely true\*  
-
-but  
-
-\*\*what is structurally admissible\*\*
-
-
-
-\---
-
-
-
-\## 🧩 Intuition
-
-
-
-Traditional reasoning systems try to determine whether statements are \*\*true\*\*.
-
-
-
-GSA³ takes a different approach:
-
-
-
-> A state is not accepted because it is true,
-
-> but because it is \*\*structurally admissible\*\*.
-
-
-
-\---
-
-
-
-\### What goes wrong in standard systems?
-
-
-
-Most AI systems fail \*\*open\*\*:
-
-
-
-\* If information is missing → they guess
-
-\* If inconsistent → they still produce output
-
-\* If ambiguous → they hallucinate
-
-
-
-\---
-
-
-
-\### What GSA³ does instead
-
-
-
-GSA³ enforces a \*\*fail-closed pipeline\*\*:
-
-
-
-1\. Start with a symbolic state space
-
-2\. Apply constraints (Ξ) → obtain a substate
-
-3\. Check consistency relative to invariants (Φᵢ)
-
-4\. Compute the \*\*kernel\*\* (maximal consistent substate)
-
-5\. Select the highest admissible level (I\*)
-
-
-
-If no level is consistent → \*\*REFUSAL\*\*
-
-
-
-\---
-
-
-
-\### Why this matters
-
-
-
-\* No hallucinations
-
-\* No silent contradictions
-
-\* No unjustified conclusions
-
-
-
-Every output is \*\*structurally justified\*\*.
-
-
-
-\---
-
-
-
-\### One-line summary
-
-
-
-> GSA³ replaces truth with \*\*consistency under invariants\*\*,
-
-> and replaces guessing with \*\*refusal\*\*.
-
-
-
-\---
-
-
-
-🧍 Simple Explanation (Non-Technical)
-
-
-
-Most systems today try to give an answer, even when they are unsure.
-
-
-
-That’s why you get:
-
-
-
-wrong answers
-
-contradictions
-
-made-up explanations (“hallucinations”)
-
-What GSA³ does differently
-
-
-
-GSA³ does not try to always answer.
-
-
-
-Instead, it asks:
-
-
-
-“Do I have enough consistent information to justify an answer?”
-
-
-
-If the answer is yes → it responds
-
-If the answer is no → it refuses
-
-
-
-Example
-
-
-
-Imagine someone asks:
-
-
-
-“Is this statement correct?”
-
-
-
-A typical system might guess or give a confident answer.
-
-
-
-GSA³ will instead:
-
-
-
-check whether the information is consistent
-
-check whether the constraints are satisfied
-
-only answer if everything aligns
-
-
-
-Otherwise:
-
-
-
-REFUSAL
-
-
-
-Why this is important
-
-
-
-It means:
-
-
-
-No guessing
-
-No hidden assumptions
-
-No confident nonsense
-
-
-
-Only answers that are structurally justified.
-
-
-
-In one sentence
-
-
-
-GSA³ would rather say “I don’t know” than give a wrong answer.
-
-
-
-\---
-
-
-
-## 🔄 Pipeline Overview
-
-Visual overview of the fail-closed reasoning pipeline:
+> A fail-closed reasoning system with a non-interfering diagnostic layer.
 
 ---
 
-## Legend
+## 🧠 Overview
 
-- Ψ: Symbolic state space (logical formula)
-- Ξ: Additional constraints / restrictions
-- Φᵢ: Invariants at level i
-- ΔΦ: Change in the invariant system (0 = allowed, ≠0 = violation)
-- S': Derived substate after applying constraints
-- K⁽ⁱ⁾(S'): Kernel at level i (maximal consistent substate)
-- canon(σ): Canonical representation of a claim
-- I*: Highest admissible level
+This repository implements a **two-layer architecture**:
+
+- **GSA Core** → determines admissibility (existence)
+- **CFM Layer** → explains outcomes (diagnostic only)
+
+This enforces the central principle:
+
+> **The core determines existence; CFM explains it.**
 
 ---
 
-```plaintext
-State Space (Ψ)
-   |
-   v
-Apply Constraints (Ξ)
-   |
-   v
-Substate S'
-   |
-   v
-Check Φᵢ-Consistency
-   |
-   +----------------------+
-   |                      |
-   v                      v
-Consistent           Inconsistent
-   |                      |
-   v                      v
-Kernel K^(i)(S')     Collapse
-   |                      |
-   v                      v
-Select I*             REFUSAL
-   |
-   v
-+---------+
-|         |
-v         v
-STRICT   SAFE
-(unique) (multiple)
+## 🧱 Architecture
 
-Ψ → Ξ → S' → Φ-check → K⁽ⁱ⁾(S') → canon(σ) → Output
+         +----------------------+
+         |   CFM (Diagnostic)   |
+         |----------------------|
+         | - rupture analysis   |
+         | - interference       |
+         | - perspective (Π)    |
+         +----------↑-----------+
+                    |
+                    | read-only
+                    |
+         +----------↓-----------+
+         |     GSA Core         |
+         |----------------------|
+         | - constraints (Ω)    |
+         | - transitions (Θ)    |
+         | - fail-closed logic  |
+         +----------------------+
 
-## Example
 
-1. State Space (Ψ):  
-   `x > 0 ∧ y = 2x`
+### Key Property
 
-2. Apply Constraints (Ξ):  
-   `x = 2`  
-   → Substate S': `x = 2 ∧ y = 4`
+- CFM has **read-only access**
+- CFM **cannot modify** core behavior
+- Core output is **final and authoritative**
 
-3. Check Φᵢ-Consistency:
-   - Level 0: Consistent (no invariants)
-   - Level 1: Consistent (`x ≥ 0`)
+---
 
-4. Kernel K⁽ⁱ⁾(S'):  
-   `x = 2 ∧ y = 4`
+## 📁 Project Structure
 
-5. Canonicalization:
-   `canon(S') → σ̂`
+fijnman-gsa3/
+├── paper/ # Formal theory (LaTeX, PDF, figures)
+├── src/
+│ ├── gsa/ # Core reasoning system (existence)
+│ └── cfm/ # Diagnostic layer (analysis)
+├── tests/ # Verification
+├── README.md
+├── pytest.ini
 
-6. Result:
-   Unique model → **STRICT**
+---
 
-## Modi
+## ⚙️ Components
 
-- **STRICT**:
-  - |Models(S')| = 1
-  - ΔΦ = 0
+### 🔹 GSA Core (`src/gsa/`)
 
-- **SAFE**:
-  - |Models(S')| > 1
-  - ∀ m: Φ(m) = 1
+Contains:
 
-- **DEFEASIBLE**:
-  - ∃ m: Φ(m) = 0  
-  → REFUSAL
+- `GSA51Core` → formal symbolic reasoning system
+- `Core` → minimal 1D fail-closed prototype
 
-- **HALTED**:
-  - Complete_claim = false  
-  → HALT_SPEC_REQUIRED
+Behavior:
 
-## Fail-Closed Behavior
+- Returns:
+  - `ADMISSIBLE`
+  - `REJECT`
+- No guessing
+- No repair
+- No implicit assumptions
 
-The system executes a transition only if:
+---
 
-- Complete_claim(σ) = true  
-- canon(σ) exists  
-- ΔΦ = 0  
+### 🔹 CFM Layer (`src/cfm/`)
 
-Formally:
+Implements:
 
-A(q, S) is defined if and only if the above conditions hold.
+- **Rupture detection**
+- **Constraint interference**
+- **Perspective distribution (Π)**
 
-Otherwise:
+Example:
 
-- Incomplete specification → HALT_SPEC_REQUIRED  
-- Inconsistency → REFUSAL  
-
-The system never guesses or interpolates.
-
-All semantics in this diagram are operational.
-If a step cannot be executed, the system halts.
+```python
+is_rupture(output)
+interference(x, dx, lower, upper)
+update_pi(pi, x, output)
 ```
 
+---
 
-\---
+🚫 Strict Constraints (CFM)
 
+CFM is forbidden to:
 
+modify core state
+change core output
+repair invalid inputs
+infer missing data
 
-\## 🧠 Key Concepts
+---
 
+🧪 Tests
 
+Run:
 
-\* \*\*Fail-closed semantics\*\*: no guessing, no fallback heuristics
+python -m pytest tests
 
-\* \*\*Invariant hierarchy\*\*: Φ₀ ⊆ Φ₁ ⊆ … ⊆ Φₖ
+Verified:
 
-\* \*\*Kernel-based admissibility\*\*: inconsistent substates collapse
+✅ fail-closed behavior
+✅ boundary rejection
+✅ rupture detection
+✅ interference correctness
+✅ non-interference guarantee
 
-\* \*\*I\*\*\*: highest admissible level of knowledge
+---
 
+🧪 Prototype Model
 
+Current simulation:
 
-\*\*Modes:\*\*
+State: x ∈ ℝ
+Constraints:
+x ≥ -1
+x ≤ 1
+Transition: x → x + Δx
 
+CFM detects:
 
+rupture when bounds violated
+dominant constraint causing failure
 
-\* \*\*STRICT\*\* → unique model
+---
 
-\* \*\*SAFE\*\* → multiple consistent models
+📄 Formal Model
 
-\* \*\*DEFEASIBLE\*\* → inconsistency → collapse
+Located in:
 
+paper/
 
+Defines:
 
-\---
+Flow
+Constraints
+Stability
+Rupture
+Interference
+Perspective distribution (Π)
 
+---
 
+🖼️ Figures
+paper/figures/
 
-\## 📄 Paper
+Contains diagrams used in the paper:
 
+flow visualization
+constraint space
+rupture examples
 
+---
 
-Full formal specification:
+🔬 Theoretical Guarantees
+Non-Interference
 
+CFM does not affect the core:
 
+∂(Core Output) / ∂(CFM) = 0
+Fail-Closed Semantics
 
-\[paper/fijnman\_gsa3\_v5.1.1.pdf](paper/fijnman\_gsa3\_v5.1.1.pdf)
+If constraints are violated:
 
+→ REJECT
+→ no state update
 
+---
 
-Includes:
+🚧 Status
 
+CFM Proto v0.1
 
+✅ executable
+✅ tested
+✅ structurally correct
+✅ aligned with formal theory
 
-\* Constitutional core
+---
 
-\* Relational admissibility (RGR / RCR)
+🔮 Roadmap
 
-\* Execution semantics
+Next steps:
 
-\* Formal properties and proofs
+HALT vs REJECT vs REFUSAL separation
+structured rupture objects
+flow tracking (time series)
+perspective learning (Bayesian refinement)
+visualization tools
 
+---
 
+🧠 Design Philosophy
 
-\---
+This system is built on:
 
+explicit constraints over implicit assumptions
+fail-closed reasoning
+separation of decision and interpretation
 
-
-\## ⚙️ Implementation
-
-
-
-Minimal reference implementation using Z3:
-
-
-
-```
-
-src/gsa51\_core.py
-
-```
-
-
-
-\### Requirements
-
-
-
-```bash
-
-pip install z3-solver
-
-```
-
-
-
-\---
-
-
-
-\## 🧪 Tests
-
-
-
-Run from repository root:
-
-
-
-```bash
-
-python -m tests.test\_muddy\_children
-
-python -m tests.test\_inconsistency
-
-python -m tests.test\_unique\_model
-
-python -m tests.test\_strict
-
-python -m tests.test\_mode\_profile
-
-python -m tests.test\_defeasible
-
-python -m tests.test\_kernel\_monotonicity
-
-```
-
-
-
-All tests are deterministic and demonstrate the behavior of the fail-closed reasoning pipeline.
-
-
-
-\---
-
-
-
-\## 📊 Example Output
-
-
-
-```
-
-Outcome: ADMISSIBLE\_LEVEL
-
-Level: 1
-
-Kernel formula: Or(m1, m2)
-
-
-
-Models:
-
-{m1: True, m2: False}
-
-{m1: False, m2: True}
-
-{m1: True, m2: True}
-
-
-
-Unique model: False
-
-```
-
-
-
-\---
-
-
-
-\## 🔒 License
-
-
-
-GNU Affero General Public License v3.0 (AGPLv3)
-
-
-
-This ensures:
-
-
-
-\* No closed-source forks
-
-\* No proprietary SaaS without sharing changes
-
-\* Full reciprocity
-
-
-
-\---
-
-
-
-\## 🌍 Vision
-
-
-
-GSA³ is a step toward \*\*structurally reliable reasoning systems\*\*:
-
-
-
-\* No hallucinations
-
-\* No silent failures
-
-\* No hidden assumptions
-
-
-
-Only admissible structure survives.
-
-
-
-\---
-
-
-
-\## 🌐 Applications
-
-
-
-GSA³ is designed for domains where \*\*guessing is more dangerous than refusal\*\*.
-
-
-
-\### Possible application areas
-
-
-
-\- \*\*LLM reasoning safety\*\*  
-
-&#x20; As a validation layer that filters outputs and refuses structurally unsupported conclusions.
-
-
-
-\- \*\*Agent systems\*\*  
-
-&#x20; For workflows where actions should only be taken when the underlying state is admissible under explicit constraints.
-
-
-
-\- \*\*Knowledge validation\*\*  
-
-&#x20; For systems that need to distinguish between consistent, inconsistent, and underdetermined states without relying on probability.
-
-
-
-\- \*\*Formal reasoning tools\*\*  
-
-&#x20; As a fail-closed core for symbolic reasoning environments, theorem-oriented workflows, or constraint-based analysis.
-
-
-
-\- \*\*Human-in-the-loop systems\*\*  
-
-&#x20; Where the system should stop and defer rather than fabricate an answer.
-
-
-
-\### Why this matters
-
-
-
-Many systems are optimized to always return something.  
-
-GSA³ is built for situations where returning the wrong thing is worse than returning nothing.
-
-
-
-In those settings, \*\*refusal is not failure — it is a reliability condition.\*\*
-
-
-
-\---
-
-
-
-\## ❓ Why not probability?
-
-
-
-Many reasoning systems rely on probabilistic models to handle uncertainty.
-
-
-
-GSA³ takes a different approach.
-
-
-
-Instead of asking:
-
-> "What is most likely true?"
-
-
-
-it asks:
-
-> "What is structurally admissible under invariant constraints?"
-
-
-
-\### Key difference
-
-
-
-\- Probabilistic systems assign confidence to conclusions, even when the structure is incomplete or inconsistent.
-
-\- GSA³ enforces structural validity first — if admissibility cannot be established, the system refuses.
-
-
-
-\### Why this matters
-
-
-
-Probabilities can still produce answers under:
-
-\- incomplete information  
-
-\- conflicting constraints  
-
-\- underdetermined states  
-
-
-
-GSA³ does not.
-
-
-
-If a conclusion is not supported by the invariant structure, it is rejected.
-
-
-
-\### Design principle
-
-
-
-> In safety-critical or correctness-critical systems,
-
-> a wrong answer is worse than no answer.
-
-
-
-GSA³ is designed for those settings.
-
-
-
-This makes GSA³ fundamentally different from systems that optimize for completion rather than correctness.
-
-
-
-\---
-
-
-
-\## ⚠️ Status
-
-
-
-Research prototype / reference implementation
-
-Not optimized for production use
-
-
-
-\---
-
-
-
-\## 👤 Author
-
-
-
-Natanaël van Dijk
-
-
-
-\---
-
-
+---
 
