@@ -1,1 +1,2 @@
-﻿from .core import GSA51Core, Core
+﻿from .core import GSA51Core
+from .toy_core import Core

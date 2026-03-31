@@ -37,14 +37,17 @@ The project is aimed at reasoning under explicit constraints, with a strong focu
 ## Architecture
 
 ```text
-gsa/      → formal reasoning core
-cfm/      → diagnostic layer
+src/gsa/  → formal reasoning core
+src/cfm/  → diagnostic layer
+src/vce/  → execution layer
 tests/    → verification suite
 docs/     → formal specifications
 paper/    → figures and publication material
 ```
 
-The core determines admissibility; the diagnostic layer explains outcomes.
+The core determines admissibility.
+The diagnostic layer explains outcomes.
+The execution layer applies transitions.
 
 ---
 
@@ -53,17 +56,23 @@ The core determines admissibility; the diagnostic layer explains outcomes.
 ```text
 Fijnman-GSA3/
 │
-├── gsa/
-├── cfm/
+├── src/
+│   ├── gsa/          # formal reasoning core
+│   ├── cfm/          # diagnostic layer
+│   └── vce/          # execution layer
+│
 ├── tests/
 │   └── gsa/
+│
 ├── docs/
 │   ├── core/
 │   ├── formal/
 │   ├── engine/
 │   └── patch_notes/
+│
 ├── paper/
 │   └── figures/
+│
 ├── README.md
 ├── pytest.ini
 └── requirements.txt
@@ -92,21 +101,40 @@ Responsible for:
 - perspective updates
 - explanation without modifying the core
 
+
+### VCE Layer
+
+Responsible for:
+- execution of transitions
+- minimal runtime behavior
+-  event-driven flow
+- separation from diagnostics
+
 ---
 
 ## Testing
 
 Run all tests:
 ```bash
-python -m pytest tests
+python -m pytest
+```
 
 
-En:
-
-```md
 Run GSA-only tests:
 ```bash
 python -m pytest tests/gsa
+```
+
+
+Run CFM-only tests:
+```bash
+python -m pytest tests/test_cfm.py
+```
+
+Run core tests:
+```bash
+python -m pytest tests/test_core.py
+```
 
 ---
 
@@ -131,10 +159,11 @@ Contains figures and captions for publication.
 
 ## Current Status
 
-- Core: stable  
-- Tests: passing  
-- CFM: prototype  
-- Docs: in progress  
+- Core: stable
+- Tests: passing
+- CFM: modularized
+- VCE: minimal runtime introduced
+- Docs: in progress 
 
 ---
 
@@ -149,8 +178,9 @@ Contains figures and captions for publication.
 
 ## Roadmap
 
-- extend CFM diagnostics
+- expand VCE execution layer
 - formalize event grammar
+- extend diagnostics
 - expand documentation
 - prepare publication
 
@@ -207,12 +237,21 @@ Contains figures and captions for publication.
   - CFM = interpretation (read-only)
 - Ensured compositional and testable architecture
 
+### v0.4.0
+- modularized CFM into `api.py` and `diagnostics.py`
+- removed deprecated `proto.py` layer
+- separated `toy_core.py` from the formal GSA core
+- introduced a minimal VCE execution layer
+- aligned tests with the new architecture
+- all tests passing
+
 ---
 
 ## Conceptual Summary
 
-Core defines reality.  
+Core defines reality.
 CFM explains it.
+VCE executes transitions.
 
 ---
 ## License
