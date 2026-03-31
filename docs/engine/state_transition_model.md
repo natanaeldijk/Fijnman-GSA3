@@ -1,1 +1,1 @@
-In my opinion I like the EU as it is. every country can think about what they want about lgbt etc 
+
